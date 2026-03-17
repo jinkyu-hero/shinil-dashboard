@@ -36,8 +36,7 @@
     line-height: 1.6;
   }
 
-  /* ── Layout ── */
-  .page { max-width: 1200px; margin: 0 auto; padding: 2rem 1.5rem 4rem; }
+  .page { max-width: 1400px; margin: 0 auto; padding: 2rem 1.5rem 4rem; }
 
   /* ── Header ── */
   .header { display: flex; align-items: flex-start; justify-content: space-between; gap: 1rem; margin-bottom: 1.75rem; flex-wrap: wrap; }
@@ -77,74 +76,138 @@
   }
   .hint-bar svg { width: 14px; height: 14px; flex-shrink: 0; opacity: 0.5; }
 
-  /* ── Cards Grid ── */
-  .cards-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
-    gap: 12px;
+  /* ── Column layout ── */
+  .columns-wrap {
+    display: flex;
+    gap: 14px;
+    align-items: flex-start;
+    overflow-x: auto;
+    padding-bottom: 1rem;
   }
+
+  .column {
+    flex: 0 0 230px;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .column-header {
+    display: flex; align-items: center;
+    padding: 8px 8px 8px 12px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm) var(--radius-sm) 0 0;
+    border-bottom: 2px solid var(--border-hover);
+    gap: 4px;
+  }
+  .column-title {
+    flex: 1; font-size: 13px; font-weight: 600; color: var(--text);
+    border: none; background: transparent; outline: none;
+    font-family: 'Noto Sans KR', sans-serif;
+    cursor: pointer; padding: 2px 4px; border-radius: 4px;
+    white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+    min-width: 0;
+  }
+  .column-title:focus { background: var(--accent-bg); outline: 1px solid var(--accent); }
+
+  .col-btn {
+    width: 24px; height: 24px; border-radius: 5px;
+    border: none; background: none; cursor: pointer;
+    font-size: 15px; color: var(--text3); flex-shrink: 0;
+    display: flex; align-items: center; justify-content: center;
+    transition: background 0.12s, color 0.12s;
+  }
+  .col-btn:hover { background: var(--surface2); color: var(--text); }
+  .col-btn.danger:hover { background: var(--danger-bg); color: var(--danger); }
+
+  .column-body {
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-top: none;
+    border-radius: 0 0 var(--radius-sm) var(--radius-sm);
+    padding: 8px;
+    display: flex;
+    flex-direction: column;
+    gap: 7px;
+    min-height: 60px;
+    transition: background 0.15s, border-color 0.15s;
+  }
+  .column-body.drag-over-col { background: var(--accent-bg); border-color: var(--accent); }
+
+  .col-add-btn {
+    width: 100%; padding: 6px;
+    border: 1px dashed var(--border-hover);
+    border-radius: var(--radius-sm);
+    background: none; cursor: pointer;
+    font-size: 12px; color: var(--text3);
+    font-family: 'Noto Sans KR', sans-serif;
+    transition: all 0.15s; text-align: center;
+  }
+  .col-add-btn:hover { background: var(--surface); color: var(--text2); border-style: solid; }
+
+  .col-empty { font-size: 12px; color: var(--text3); text-align: center; padding: 10px 0; }
+
+  /* ── Add Column ── */
+  .add-column-btn {
+    flex: 0 0 180px; height: 72px;
+    border: 1.5px dashed var(--border-hover);
+    border-radius: var(--radius-sm);
+    background: none; cursor: pointer;
+    font-size: 13px; color: var(--text3);
+    font-family: 'Noto Sans KR', sans-serif;
+    transition: all 0.15s;
+    display: flex; align-items: center; justify-content: center; gap: 6px;
+  }
+  .add-column-btn:hover { background: var(--surface); color: var(--text2); border-style: solid; }
 
   /* ── Card ── */
   .card {
     background: var(--surface);
     border: 1px solid var(--border);
-    border-radius: var(--radius);
-    padding: 1.1rem 1.25rem 1rem;
+    border-radius: var(--radius-sm);
+    padding: 0.85rem 1rem 0.8rem;
     cursor: pointer;
     transition: box-shadow 0.18s, border-color 0.18s, transform 0.18s;
     position: relative;
     user-select: none;
-    animation: fadeIn 0.25s ease both;
+    animation: fadeIn 0.2s ease both;
   }
   .card:hover { box-shadow: var(--shadow-hover); border-color: var(--border-hover); transform: translateY(-1px); }
-  .card.selected { border-color: var(--accent); background: var(--accent-bg); }
-  .card.selected:hover { border-color: var(--accent); }
-  .card.dragging { opacity: 0.35; transform: scale(0.97); }
-  .card.drag-over { border: 2px dashed var(--accent); }
+  .card.selected { border-color: var(--accent) !important; box-shadow: 0 0 0 2px var(--accent-bg); }
+  .card.dragging { opacity: 0.3; transform: scale(0.95); }
+  .card.drag-over-card { border: 2px dashed var(--accent) !important; }
 
   .card-checkbox {
-    position: absolute; top: 12px; right: 12px;
-    width: 16px; height: 16px; cursor: pointer; accent-color: var(--accent);
+    position: absolute; top: 9px; right: 9px;
+    width: 15px; height: 15px; cursor: pointer; accent-color: var(--accent);
   }
-  .card-icon { font-size: 22px; margin-bottom: 10px; line-height: 1; }
+  .card-icon { font-size: 20px; margin-bottom: 7px; line-height: 1; }
   .card-title {
-    font-size: 14px; font-weight: 600; color: var(--text);
-    margin-bottom: 3px; padding-right: 22px;
+    font-size: 13px; font-weight: 600; color: var(--text);
+    margin-bottom: 2px; padding-right: 20px;
     overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
   }
   .card-url { font-size: 11px; color: var(--text3); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
   .card-desc {
-    font-size: 12px; color: var(--text2); margin-top: 8px;
-    line-height: 1.55;
+    font-size: 11px; color: var(--text2); margin-top: 6px; line-height: 1.5;
     display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;
   }
-
-  /* ── Empty state ── */
-  .empty-state {
-    grid-column: 1 / -1; text-align: center;
-    padding: 5rem 2rem; color: var(--text3);
-  }
-  .empty-state .empty-icon { font-size: 40px; margin-bottom: 16px; opacity: 0.5; }
-  .empty-state p { font-size: 15px; font-weight: 500; margin-bottom: 6px; color: var(--text2); }
-  .empty-state small { font-size: 13px; }
 
   /* ── Modal ── */
   .modal-overlay {
     position: fixed; inset: 0;
-    background: rgba(0,0,0,0.4);
-    backdrop-filter: blur(2px);
+    background: rgba(0,0,0,0.4); backdrop-filter: blur(2px);
     display: flex; align-items: center; justify-content: center;
     z-index: 100; padding: 1rem;
     animation: fadeIn 0.15s ease;
   }
   .modal {
-    background: var(--surface);
-    border-radius: var(--radius);
-    border: 1px solid var(--border);
-    padding: 1.75rem;
+    background: var(--surface); border-radius: var(--radius);
+    border: 1px solid var(--border); padding: 1.75rem;
     width: 100%; max-width: 500px;
     box-shadow: 0 20px 60px rgba(0,0,0,0.15);
     animation: slideUp 0.2s ease;
+    max-height: 90vh; overflow-y: auto;
   }
   .modal-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 1.5rem; }
   .modal-header h2 { font-size: 17px; font-weight: 600; }
@@ -152,25 +215,22 @@
   .modal-close:hover { color: var(--text); }
 
   .form-group { margin-bottom: 1.1rem; }
-  .form-group label { display: block; font-size: 12px; font-weight: 500; color: var(--text2); margin-bottom: 6px; letter-spacing: 0.02em; }
-  .form-group input, .form-group textarea {
-    width: 100%; padding: 9px 12px;
-    font-size: 14px; font-family: 'Noto Sans KR', sans-serif;
+  .form-group label { display: block; font-size: 12px; font-weight: 500; color: var(--text2); margin-bottom: 6px; }
+  .form-group input, .form-group textarea, .form-group select {
+    width: 100%; padding: 9px 12px; font-size: 14px;
+    font-family: 'Noto Sans KR', sans-serif;
     border: 1px solid var(--border); border-radius: var(--radius-sm);
     background: var(--surface); color: var(--text);
-    transition: border-color 0.15s, box-shadow 0.15s;
-    outline: none;
+    transition: border-color 0.15s, box-shadow 0.15s; outline: none;
   }
-  .form-group input:focus, .form-group textarea:focus {
-    border-color: var(--accent);
-    box-shadow: 0 0 0 3px rgba(37,99,235,0.1);
+  .form-group input:focus, .form-group textarea:focus, .form-group select:focus {
+    border-color: var(--accent); box-shadow: 0 0 0 3px rgba(37,99,235,0.1);
   }
-  .form-group textarea { resize: vertical; min-height: 76px; line-height: 1.6; }
+  .form-group textarea { resize: vertical; min-height: 72px; line-height: 1.6; }
 
-  /* ── Icon picker ── */
   .icon-grid {
     display: grid; grid-template-columns: repeat(9, 1fr); gap: 5px; margin-top: 6px;
-    max-height: 148px; overflow-y: auto; padding-right: 2px;
+    max-height: 136px; overflow-y: auto; padding-right: 2px;
   }
   .icon-btn {
     aspect-ratio: 1; display: flex; align-items: center; justify-content: center;
@@ -180,43 +240,34 @@
   .icon-btn:hover { border-color: var(--border-hover); background: var(--surface); transform: scale(1.1); }
   .icon-btn.active { border-color: var(--accent); background: var(--accent-bg); }
 
-  /* ── Color picker ── */
   .color-grid { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 6px; }
   .color-swatch {
     width: 28px; height: 28px; border-radius: 50%; cursor: pointer;
-    border: 2px solid transparent; transition: transform 0.15s, box-shadow 0.15s;
+    transition: transform 0.15s, box-shadow 0.15s;
   }
   .color-swatch:hover { transform: scale(1.2); }
   .color-swatch.active { box-shadow: 0 0 0 3px var(--accent); }
 
   .modal-actions { display: flex; gap: 8px; justify-content: flex-end; margin-top: 1.5rem; padding-top: 1.25rem; border-top: 1px solid var(--border); }
 
-  /* ── Toast ── */
   .toast {
     position: fixed; bottom: 1.5rem; left: 50%; transform: translateX(-50%) translateY(12px);
-    background: var(--text); color: white;
-    padding: 10px 20px; border-radius: 100px;
-    font-size: 13px; font-weight: 500;
-    z-index: 300; opacity: 0;
-    transition: opacity 0.2s, transform 0.2s;
-    white-space: nowrap; pointer-events: none;
+    background: var(--text); color: white; padding: 10px 20px; border-radius: 100px;
+    font-size: 13px; font-weight: 500; z-index: 300; opacity: 0;
+    transition: opacity 0.2s, transform 0.2s; white-space: nowrap; pointer-events: none;
   }
   .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
 
-  /* ── Animations ── */
   @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
   @keyframes slideUp { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: translateY(0); } }
 
-  /* ── Scrollbar ── */
-  .icon-grid::-webkit-scrollbar { width: 4px; }
-  .icon-grid::-webkit-scrollbar-track { background: transparent; }
-  .icon-grid::-webkit-scrollbar-thumb { background: var(--border-hover); border-radius: 4px; }
+  .icon-grid::-webkit-scrollbar, .modal::-webkit-scrollbar { width: 4px; }
+  .icon-grid::-webkit-scrollbar-track, .modal::-webkit-scrollbar-track { background: transparent; }
+  .icon-grid::-webkit-scrollbar-thumb, .modal::-webkit-scrollbar-thumb { background: var(--border-hover); border-radius: 4px; }
 </style>
 </head>
 <body>
-
 <div class="page">
-  <!-- Header -->
   <div class="header">
     <div class="header-left">
       <div class="logo-mark">
@@ -228,39 +279,35 @@
       </div>
     </div>
     <div class="toolbar">
-      <button class="btn btn-primary" onclick="openAdd()">
-        <span class="icon">＋</span> 새 카드 추가
-      </button>
-      <button class="btn" id="editBtn" disabled onclick="openEdit()">
-        <span class="icon">✎</span> 수정
-      </button>
-      <button class="btn btn-danger" id="deleteBtn" disabled onclick="deleteSelected()">
-        <span class="icon">✕</span> 삭제
-      </button>
-      <button class="btn" onclick="openSettings()" title="설정">
-        <span class="icon">⚙</span>
-      </button>
+      <button class="btn btn-primary" onclick="openAdd(null)"><span class="icon">＋</span> 새 카드 추가</button>
+      <button class="btn" id="editBtn" disabled onclick="openEdit()"><span class="icon">✎</span> 수정</button>
+      <button class="btn btn-danger" id="deleteBtn" disabled onclick="deleteSelected()"><span class="icon">✕</span> 삭제</button>
+      <button class="btn" onclick="exportJSON()" title="구성 내보내기">↑ 내보내기</button>
+      <button class="btn" onclick="document.getElementById('importFile').click()" title="구성 가져오기">↓ 가져오기</button>
+      <input type="file" id="importFile" accept=".json" style="display:none" onchange="importJSON(event)">
+      <button class="btn" onclick="openSettings()" title="설정"><span class="icon">⚙</span></button>
     </div>
   </div>
 
-  <!-- Hint -->
   <div class="hint-bar">
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
-    카드를 클릭하면 링크로 이동합니다. 드래그해서 순서를 변경하고, 체크박스로 선택 후 수정·삭제할 수 있습니다.
+    카드를 클릭하면 링크로 이동합니다. 열 제목을 클릭해 편집하고, 카드를 드래그해 다른 열로 이동할 수 있습니다.
   </div>
 
-  <!-- Cards -->
-  <div class="cards-grid" id="cardsGrid"></div>
+  <div class="columns-wrap" id="columnsWrap"></div>
 </div>
 
-<!-- Add / Edit Modal -->
+<!-- Card Modal -->
 <div class="modal-overlay" id="cardModal" style="display:none" onclick="if(event.target===this)closeCardModal()">
   <div class="modal">
     <div class="modal-header">
       <h2 id="modalTitle">새 카드 추가</h2>
       <button class="modal-close" onclick="closeCardModal()">×</button>
     </div>
-
+    <div class="form-group">
+      <label>열 선택 *</label>
+      <select id="fCol"></select>
+    </div>
     <div class="form-group">
       <label>제목 *</label>
       <input type="text" id="fTitle" placeholder="예: 2학년 성적 관리" maxlength="40" />
@@ -273,17 +320,14 @@
       <label>설명 (선택)</label>
       <textarea id="fDesc" placeholder="이 카드에 대한 간단한 설명을 입력하세요" maxlength="120"></textarea>
     </div>
-
     <div class="form-group">
       <label>아이콘</label>
       <div class="icon-grid" id="iconGrid"></div>
     </div>
-
     <div class="form-group">
       <label>카드 색상</label>
       <div class="color-grid" id="colorGrid"></div>
     </div>
-
     <div class="modal-actions">
       <button class="btn" onclick="closeCardModal()">취소</button>
       <button class="btn btn-primary" onclick="saveCard()">저장</button>
@@ -313,11 +357,9 @@
   </div>
 </div>
 
-<!-- Toast -->
 <div class="toast" id="toast"></div>
 
 <script>
-// ── Constants ──────────────────────────────────────────────
 const ICONS = [
   '📊','📋','📝','📁','📂','🗂️','📌','📎','🔗','📐',
   '📏','🧮','📈','📉','📄','📃','📑','🗒️','🗓️','📅',
@@ -342,131 +384,262 @@ const COLORS = [
   { name: '로즈',          bg: '#ffe4e6', border: '#fecdd3' },
 ];
 
-// ── State ──────────────────────────────────────────────────
-let cards = [];
+let columns = [];
 let selected = new Set();
-let editingId = null;
-let curIcon = '📊';
+let editingCardId = null;
+let curIcon  = '📊';
 let curColor = COLORS[0];
-let dragSrcIdx = null;
+let dragCard = null;
 
-// ── Persistence ────────────────────────────────────────────
+function uid() { return Date.now().toString(36) + Math.random().toString(36).slice(2,6); }
+
+function migrateV2() {
+  try {
+    const v2 = localStorage.getItem('dashboard_v2');
+    if (!v2) return false;
+    const parsed = JSON.parse(v2);
+    const oldCards = parsed.cards || [];
+    if (!oldCards.length) return false;
+    columns = [{
+      id: uid(),
+      title: '기본 열',
+      cards: oldCards.map(c => ({
+        id: c.id || uid(),
+        icon:  c.icon  || '📋',
+        title: c.title || '',
+        url:   c.url   || '',
+        desc:  c.desc  || '',
+        color: c.color || COLORS[0],
+      }))
+    }];
+    localStorage.setItem('dashboard_v3', JSON.stringify(columns));
+    localStorage.removeItem('dashboard_v2');
+    return true;
+  } catch(e) { return false; }
+}
+
 function load() {
   try {
-    const d = localStorage.getItem('dashboard_v2');
-    if (d) { const p = JSON.parse(d); cards = p.cards || []; }
+    const d = localStorage.getItem('dashboard_v3');
+    if (d) columns = JSON.parse(d);
     const t = localStorage.getItem('dashboard_title');
     const s = localStorage.getItem('dashboard_sub');
-    if (t) { document.getElementById('dashTitle').textContent = t; document.getElementById('sTitle').value = t; }
-    if (s) { document.getElementById('dashSub').textContent = s; document.getElementById('sSub').value = s; }
-  } catch(e) { cards = []; }
-  if (!cards.length) {
-    cards = [
-      { id: uid(), icon: '📊', title: '업무 현황판',  url: 'https://docs.google.com/spreadsheets', desc: '전체 업무 현황을 한눈에 관리', color: COLORS[0] },
-      { id: uid(), icon: '📅', title: '연간 일정표',  url: 'https://docs.google.com/spreadsheets', desc: '학사 일정 및 행사 계획 관리', color: COLORS[1] },
-      { id: uid(), icon: '📋', title: '학생 명단',    url: 'https://docs.google.com/spreadsheets', desc: '학년별 학생 정보 통합 관리', color: COLORS[2] },
+    if (t) document.getElementById('dashTitle').textContent = t;
+    if (s) document.getElementById('dashSub').textContent = s;
+  } catch(e) { columns = []; }
+
+  if (!columns.length && migrateV2()) return;
+
+  if (!columns.length) {
+    columns = [
+      { id: uid(), title: '업무 관리', cards: [
+        { id: uid(), icon: '📊', title: '업무 현황판', url: 'https://docs.google.com/spreadsheets', desc: '전체 업무 현황 관리', color: COLORS[0] },
+        { id: uid(), icon: '📅', title: '연간 일정표', url: 'https://docs.google.com/spreadsheets', desc: '학사 일정 및 행사 계획', color: COLORS[1] },
+      ]},
+      { id: uid(), title: '학생 관리', cards: [
+        { id: uid(), icon: '📋', title: '학생 명단', url: 'https://docs.google.com/spreadsheets', desc: '학년별 학생 정보', color: COLORS[2] },
+      ]},
+      { id: uid(), title: '기타', cards: [] },
     ];
   }
 }
 
 function save() {
-  try { localStorage.setItem('dashboard_v2', JSON.stringify({ cards })); } catch(e) {}
+  try { localStorage.setItem('dashboard_v3', JSON.stringify(columns)); } catch(e) {}
 }
 
-function uid() { return Date.now().toString(36) + Math.random().toString(36).slice(2, 6); }
-
-// ── Render ─────────────────────────────────────────────────
 function render() {
-  const grid = document.getElementById('cardsGrid');
-  grid.innerHTML = '';
+  const wrap = document.getElementById('columnsWrap');
+  wrap.innerHTML = '';
 
-  if (!cards.length) {
-    grid.innerHTML = `
-      <div class="empty-state">
-        <div class="empty-icon">📭</div>
-        <p>아직 카드가 없습니다</p>
-        <small>상단의 "새 카드 추가" 버튼으로 시작해보세요</small>
-      </div>`;
-    return;
-  }
+  columns.forEach(col => {
+    const colEl = document.createElement('div');
+    colEl.className = 'column';
+    colEl.dataset.colId = col.id;
 
-  cards.forEach((card, i) => {
-    const isSel = selected.has(card.id);
-    const c = card.color || COLORS[0];
-    const el = document.createElement('div');
-    el.className = 'card' + (isSel ? ' selected' : '');
-    el.draggable = true;
-    el.dataset.id = card.id;
-    el.dataset.idx = i;
-    el.style.background = c.bg;
-    el.style.borderColor = isSel ? 'var(--accent)' : c.border;
-    el.innerHTML = `
-      <input type="checkbox" class="card-checkbox" ${isSel ? 'checked' : ''}>
-      <div class="card-icon">${card.icon}</div>
-      <div class="card-title">${esc(card.title)}</div>
-      <div class="card-url">${esc(trimUrl(card.url))}</div>
-      ${card.desc ? `<div class="card-desc">${esc(card.desc)}</div>` : ''}
-    `;
-    el.querySelector('.card-checkbox').addEventListener('change', (e) => {
-      e.stopPropagation();
-      if (e.target.checked) selected.add(card.id); else selected.delete(card.id);
-      updateToolbar(); render();
+    // Header
+    const header = document.createElement('div');
+    header.className = 'column-header';
+
+    const titleEl = document.createElement('input');
+    titleEl.className = 'column-title';
+    titleEl.value = col.title;
+    titleEl.maxLength = 20;
+    titleEl.title = '클릭해서 열 제목 편집';
+    titleEl.addEventListener('change', () => {
+      col.title = titleEl.value.trim() || '열';
+      titleEl.value = col.title;
+      save();
     });
-    el.addEventListener('click', (e) => {
-      if (e.target.type === 'checkbox') return;
-      window.open(card.url, '_blank');
+    titleEl.addEventListener('keydown', e => { if (e.key === 'Enter') titleEl.blur(); });
+
+    const addBtn = document.createElement('button');
+    addBtn.className = 'col-btn';
+    addBtn.title = '카드 추가';
+    addBtn.textContent = '＋';
+    addBtn.onclick = () => openAdd(col.id);
+
+    const delBtn = document.createElement('button');
+    delBtn.className = 'col-btn danger';
+    delBtn.title = '열 삭제';
+    delBtn.textContent = '×';
+    delBtn.onclick = () => deleteColumn(col.id);
+
+    header.appendChild(titleEl);
+    header.appendChild(addBtn);
+    header.appendChild(delBtn);
+
+    // Body
+    const body = document.createElement('div');
+    body.className = 'column-body';
+    body.dataset.colId = col.id;
+
+    body.addEventListener('dragover', e => {
+      e.preventDefault();
+      body.classList.add('drag-over-col');
     });
-    el.addEventListener('dragstart', onDragStart);
-    el.addEventListener('dragover',  onDragOver);
-    el.addEventListener('drop',      onDrop);
-    el.addEventListener('dragend',   onDragEnd);
-    grid.appendChild(el);
+    body.addEventListener('dragleave', e => {
+      if (!body.contains(e.relatedTarget)) body.classList.remove('drag-over-col');
+    });
+    body.addEventListener('drop', e => {
+      e.preventDefault();
+      body.classList.remove('drag-over-col');
+      if (!dragCard) return;
+      moveCard(dragCard.cardId, dragCard.srcColId, col.id, null);
+    });
+
+    if (col.cards.length === 0) {
+      const empty = document.createElement('div');
+      empty.className = 'col-empty';
+      empty.textContent = '카드가 없습니다';
+      body.appendChild(empty);
+    } else {
+      col.cards.forEach((card, ci) => body.appendChild(makeCardEl(card, col.id, ci)));
+    }
+
+    const addCardBtn = document.createElement('button');
+    addCardBtn.className = 'col-add-btn';
+    addCardBtn.textContent = '＋ 카드 추가';
+    addCardBtn.onclick = () => openAdd(col.id);
+    body.appendChild(addCardBtn);
+
+    colEl.appendChild(header);
+    colEl.appendChild(body);
+    wrap.appendChild(colEl);
   });
+
+  // Add column button
+  const addColBtn = document.createElement('button');
+  addColBtn.className = 'add-column-btn';
+  addColBtn.innerHTML = '<span style="font-size:18px">＋</span> 열 추가';
+  addColBtn.onclick = addColumn;
+  wrap.appendChild(addColBtn);
 }
 
-function trimUrl(url) {
-  try { const u = new URL(url); return u.hostname + (u.pathname !== '/' ? u.pathname.slice(0,30) : ''); }
-  catch(e) { return url.slice(0, 40); }
+function makeCardEl(card, colId, ci) {
+  const isSel = selected.has(card.id);
+  const c = card.color || COLORS[0];
+  const el = document.createElement('div');
+  el.className = 'card' + (isSel ? ' selected' : '');
+  el.draggable = true;
+  el.dataset.cardId = card.id;
+  el.dataset.colId  = colId;
+  el.dataset.ci     = ci;
+  el.style.background  = c.bg;
+  if (!isSel) el.style.borderColor = c.border;
+
+  el.innerHTML = `
+    <input type="checkbox" class="card-checkbox" ${isSel ? 'checked' : ''}>
+    <div class="card-icon">${card.icon}</div>
+    <div class="card-title">${esc(card.title)}</div>
+    <div class="card-url">${esc(trimUrl(card.url))}</div>
+    ${card.desc ? `<div class="card-desc">${esc(card.desc)}</div>` : ''}
+  `;
+
+  el.querySelector('.card-checkbox').addEventListener('change', e => {
+    e.stopPropagation();
+    if (e.target.checked) selected.add(card.id); else selected.delete(card.id);
+    updateToolbar(); render();
+  });
+  el.addEventListener('click', e => {
+    if (e.target.type === 'checkbox') return;
+    window.open(card.url, '_blank');
+  });
+  el.addEventListener('dragstart', e => {
+    dragCard = { cardId: card.id, srcColId: colId };
+    setTimeout(() => el.classList.add('dragging'), 0);
+    e.dataTransfer.effectAllowed = 'move';
+  });
+  el.addEventListener('dragend', () => {
+    el.classList.remove('dragging');
+    document.querySelectorAll('.drag-over-card, .drag-over-col').forEach(x => {
+      x.classList.remove('drag-over-card', 'drag-over-col');
+    });
+    dragCard = null;
+  });
+  el.addEventListener('dragover', e => {
+    e.preventDefault(); e.stopPropagation();
+    document.querySelectorAll('.drag-over-card').forEach(x => x.classList.remove('drag-over-card'));
+    document.querySelectorAll('.drag-over-col').forEach(x => x.classList.remove('drag-over-col'));
+    el.classList.add('drag-over-card');
+  });
+  el.addEventListener('drop', e => {
+    e.preventDefault(); e.stopPropagation();
+    el.classList.remove('drag-over-card');
+    if (!dragCard || dragCard.cardId === card.id) return;
+    moveCard(dragCard.cardId, dragCard.srcColId, colId, ci);
+  });
+
+  return el;
 }
 
-function esc(s) {
-  return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+function moveCard(cardId, srcColId, dstColId, insertBefore) {
+  const srcCol = columns.find(c => c.id === srcColId);
+  const dstCol = columns.find(c => c.id === dstColId);
+  if (!srcCol || !dstCol) return;
+  const idx = srcCol.cards.findIndex(c => c.id === cardId);
+  if (idx < 0) return;
+  const [card] = srcCol.cards.splice(idx, 1);
+  if (insertBefore === null) dstCol.cards.push(card);
+  else dstCol.cards.splice(insertBefore, 0, card);
+  save(); render();
 }
 
-// ── Toolbar ────────────────────────────────────────────────
+function addColumn() {
+  columns.push({ id: uid(), title: '새 열', cards: [] });
+  save(); render();
+  const inputs = document.querySelectorAll('.column-title');
+  if (inputs.length) { const last = inputs[inputs.length - 1]; last.focus(); last.select(); }
+}
+
+function deleteColumn(colId) {
+  const col = columns.find(c => c.id === colId);
+  if (!col) return;
+  if (col.cards.length > 0 && !confirm(`"${col.title}" 열의 카드 ${col.cards.length}개도 함께 삭제됩니다. 계속할까요?`)) return;
+  col.cards.forEach(c => selected.delete(c.id));
+  columns = columns.filter(c => c.id !== colId);
+  updateToolbar(); save(); render();
+  toast('열이 삭제되었습니다');
+}
+
 function updateToolbar() {
   const n = selected.size;
   document.getElementById('editBtn').disabled   = n !== 1;
   document.getElementById('deleteBtn').disabled = n === 0;
 }
 
-// ── Drag & Drop ────────────────────────────────────────────
-function onDragStart(e) {
-  dragSrcIdx = parseInt(e.currentTarget.dataset.idx);
-  e.currentTarget.classList.add('dragging');
-  e.dataTransfer.effectAllowed = 'move';
-}
-function onDragOver(e) {
-  e.preventDefault();
-  document.querySelectorAll('.card').forEach(c => c.classList.remove('drag-over'));
-  e.currentTarget.classList.add('drag-over');
-}
-function onDrop(e) {
-  e.preventDefault();
-  const tgt = parseInt(e.currentTarget.dataset.idx);
-  e.currentTarget.classList.remove('drag-over');
-  if (dragSrcIdx === null || dragSrcIdx === tgt) return;
-  const [moved] = cards.splice(dragSrcIdx, 1);
-  cards.splice(tgt, 0, moved);
-  save(); render();
-}
-function onDragEnd(e) {
-  e.currentTarget.classList.remove('dragging');
-  document.querySelectorAll('.card').forEach(c => c.classList.remove('drag-over'));
-  dragSrcIdx = null;
+function buildColSelect(preselect) {
+  const sel = document.getElementById('fCol');
+  sel.innerHTML = '';
+  columns.forEach(col => {
+    const opt = document.createElement('option');
+    opt.value = col.id;
+    opt.textContent = col.title;
+    if (col.id === preselect) opt.selected = true;
+    sel.appendChild(opt);
+  });
 }
 
-// ── Icon Grid ──────────────────────────────────────────────
 function buildIconGrid() {
   const g = document.getElementById('iconGrid');
   g.innerHTML = '';
@@ -475,13 +648,11 @@ function buildIconGrid() {
     b.type = 'button';
     b.className = 'icon-btn' + (ic === curIcon ? ' active' : '');
     b.textContent = ic;
-    b.title = ic;
     b.onclick = () => { curIcon = ic; buildIconGrid(); };
     g.appendChild(b);
   });
 }
 
-// ── Color Grid ─────────────────────────────────────────────
 function buildColorGrid() {
   const g = document.getElementById('colorGrid');
   g.innerHTML = '';
@@ -496,65 +667,78 @@ function buildColorGrid() {
   });
 }
 
-// ── Add Modal ──────────────────────────────────────────────
-function openAdd() {
-  editingId = null; curIcon = '📊'; curColor = COLORS[0];
+function openAdd(colId) {
+  editingCardId = null;
+  curIcon = '📊'; curColor = COLORS[0];
   document.getElementById('modalTitle').textContent = '새 카드 추가';
   document.getElementById('fTitle').value = '';
   document.getElementById('fUrl').value   = '';
   document.getElementById('fDesc').value  = '';
+  buildColSelect(colId || (columns[0] && columns[0].id));
   buildIconGrid(); buildColorGrid();
   document.getElementById('cardModal').style.display = 'flex';
   setTimeout(() => document.getElementById('fTitle').focus(), 50);
 }
 
-// ── Edit Modal ─────────────────────────────────────────────
 function openEdit() {
-  const id   = [...selected][0];
-  const card = cards.find(c => c.id === id);
-  if (!card) return;
-  editingId = id;
-  curIcon  = card.icon;
-  curColor = card.color || COLORS[0];
+  const cardId = [...selected][0];
+  let foundCard = null, foundColId = null;
+  for (const col of columns) {
+    const c = col.cards.find(x => x.id === cardId);
+    if (c) { foundCard = c; foundColId = col.id; break; }
+  }
+  if (!foundCard) return;
+  editingCardId = cardId;
+  curIcon  = foundCard.icon;
+  curColor = foundCard.color || COLORS[0];
   document.getElementById('modalTitle').textContent = '카드 수정';
-  document.getElementById('fTitle').value = card.title;
-  document.getElementById('fUrl').value   = card.url;
-  document.getElementById('fDesc').value  = card.desc || '';
+  document.getElementById('fTitle').value = foundCard.title;
+  document.getElementById('fUrl').value   = foundCard.url;
+  document.getElementById('fDesc').value  = foundCard.desc || '';
+  buildColSelect(foundColId);
   buildIconGrid(); buildColorGrid();
   document.getElementById('cardModal').style.display = 'flex';
 }
 
 function closeCardModal() { document.getElementById('cardModal').style.display = 'none'; }
 
-// ── Save Card ──────────────────────────────────────────────
 function saveCard() {
   const title = document.getElementById('fTitle').value.trim();
   const url   = document.getElementById('fUrl').value.trim();
   const desc  = document.getElementById('fDesc').value.trim();
+  const colId = document.getElementById('fCol').value;
   if (!title) { toast('제목을 입력해주세요'); document.getElementById('fTitle').focus(); return; }
   if (!url)   { toast('URL을 입력해주세요');  document.getElementById('fUrl').focus();   return; }
 
-  if (editingId) {
-    const idx = cards.findIndex(c => c.id === editingId);
-    if (idx > -1) cards[idx] = { id: editingId, icon: curIcon, title, url, desc, color: curColor };
+  const dstCol = columns.find(c => c.id === colId);
+  if (!dstCol) return;
+
+  if (editingCardId) {
+    for (const col of columns) {
+      const idx = col.cards.findIndex(c => c.id === editingCardId);
+      if (idx > -1) {
+        const updated = { id: editingCardId, icon: curIcon, title, url, desc, color: curColor };
+        if (col.id === colId) { col.cards[idx] = updated; }
+        else { col.cards.splice(idx, 1); dstCol.cards.push(updated); }
+        break;
+      }
+    }
     selected.clear(); toast('수정되었습니다');
   } else {
-    cards.push({ id: uid(), icon: curIcon, title, url, desc, color: curColor });
+    dstCol.cards.push({ id: uid(), icon: curIcon, title, url, desc, color: curColor });
     toast('카드가 추가되었습니다');
   }
   save(); render(); updateToolbar(); closeCardModal();
 }
 
-// ── Delete ─────────────────────────────────────────────────
 function deleteSelected() {
   if (!selected.size) return;
   if (!confirm(`선택한 카드 ${selected.size}개를 삭제할까요?`)) return;
-  cards = cards.filter(c => !selected.has(c.id));
+  columns.forEach(col => { col.cards = col.cards.filter(c => !selected.has(c.id)); });
   selected.clear(); save(); render(); updateToolbar();
   toast('삭제되었습니다');
 }
 
-// ── Settings ───────────────────────────────────────────────
 function openSettings() {
   document.getElementById('sTitle').value = document.getElementById('dashTitle').textContent;
   document.getElementById('sSub').value   = document.getElementById('dashSub').textContent;
@@ -570,17 +754,73 @@ function saveSettings() {
   closeSettings(); toast('설정이 저장되었습니다');
 }
 
-// ── Toast ──────────────────────────────────────────────────
+function trimUrl(url) {
+  try { const u = new URL(url); return u.hostname + (u.pathname !== '/' ? u.pathname.slice(0,28) : ''); }
+  catch(e) { return url.slice(0,38); }
+}
+function esc(s) {
+  return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+
 let toastTimer;
 function toast(msg) {
   clearTimeout(toastTimer);
   const el = document.getElementById('toast');
-  el.textContent = msg;
-  el.classList.add('show');
+  el.textContent = msg; el.classList.add('show');
   toastTimer = setTimeout(() => el.classList.remove('show'), 2500);
 }
 
-// ── Keyboard shortcuts ─────────────────────────────────────
+// ── Export / Import ────────────────────────────────────────
+function exportJSON() {
+  const data = {
+    version: 3,
+    exportedAt: new Date().toISOString(),
+    title: document.getElementById('dashTitle').textContent,
+    sub: document.getElementById('dashSub').textContent,
+    columns: columns,
+  };
+  const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+  const url  = URL.createObjectURL(blob);
+  const a    = document.createElement('a');
+  const date = new Date().toLocaleDateString('ko-KR').replace(/\. /g,'-').replace('.','');
+  a.href     = url;
+  a.download = `대시보드_${date}.json`;
+  a.click();
+  URL.revokeObjectURL(url);
+  toast('내보내기 완료! 파일을 공유하세요');
+}
+
+function importJSON(e) {
+  const file = e.target.files[0];
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = ev => {
+    try {
+      const data = JSON.parse(ev.target.result);
+      if (!data.columns || !Array.isArray(data.columns)) {
+        toast('올바른 대시보드 파일이 아닙니다'); return;
+      }
+      if (!confirm('현재 구성을 가져온 내용으로 교체할까요?\n(기존 카드는 사라집니다)')) return;
+      columns = data.columns;
+      if (data.title) {
+        document.getElementById('dashTitle').textContent = data.title;
+        localStorage.setItem('dashboard_title', data.title);
+      }
+      if (data.sub) {
+        document.getElementById('dashSub').textContent = data.sub;
+        localStorage.setItem('dashboard_sub', data.sub);
+      }
+      selected.clear();
+      save(); render(); updateToolbar();
+      toast('가져오기 완료!');
+    } catch(err) {
+      toast('파일을 읽는 중 오류가 발생했습니다');
+    }
+    e.target.value = '';
+  };
+  reader.readAsText(file);
+}
+
 document.addEventListener('keydown', e => {
   if (e.key === 'Escape') { closeCardModal(); closeSettings(); }
   if ((e.metaKey || e.ctrlKey) && e.key === 'Enter') {
@@ -588,7 +828,6 @@ document.addEventListener('keydown', e => {
   }
 });
 
-// ── Init ───────────────────────────────────────────────────
 load();
 render();
 </script>
